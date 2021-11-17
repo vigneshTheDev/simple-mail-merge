@@ -6,5 +6,5 @@ global.onOpen = () => {
 // @ts-ignore
 global.openAddon = () => {
   const html = HtmlService.createHtmlOutputFromFile('app.html');
-  SpreadsheetApp.getUi().showSidebar(html.setTitle('Html'));
+  SpreadsheetApp.getUi().showSidebar(html.setTitle('Simple Mail Merge'));
 };

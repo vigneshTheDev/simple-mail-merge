@@ -33,7 +33,7 @@ module.exports = {
             loader: 'css-loader',
           },
           {
-            loader: 'scss-loader',
+            loader: 'sass-loader',
           },
         ],
       },
@@ -44,8 +44,8 @@ module.exports = {
     new HtmlPlugin({
       filename: 'app.html',
       chunks: ['client'],
+      cache: false,
       template: path.join(__dirname, './src/client/index.html'),
-      inlineSource: '.(js|css)$',
       inject: 'body',
     }),
     new HtmlInlineScriptPlugin(),
