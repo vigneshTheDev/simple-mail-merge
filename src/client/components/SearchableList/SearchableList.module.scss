@@ -16,13 +16,30 @@
   cursor: pointer;
   transition: 0.3s linear background-color;
   border-radius: 4px;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
+  display: flex;
 
   &:hover {
     background-color: #e6f7ff;
   }
+
+  &.selected {
+    background-color: #48b3ff;
+  }
+}
+
+.itemLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+  flex-grow: 1;
+}
+
+.selectedIcon {
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin-left: 8px;
+  color: #ffffff;
 }
 
 .searchBox {

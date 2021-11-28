@@ -29,7 +29,7 @@ export const MailMerge: React.FC = () => {
         </Card>
 
         <Card style={{ flexShrink: 1, overflowY: "auto" }}>
-          <MailingListSelector onSelect={onSelectMailingList}></MailingListSelector>
+          <MailingListSelector onSelect={onSelectMailingList} selectedMailingList={mailingList}></MailingListSelector>
         </Card>
       </div>
     </Layout>

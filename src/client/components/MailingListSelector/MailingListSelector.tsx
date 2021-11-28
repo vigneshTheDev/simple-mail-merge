@@ -5,11 +5,15 @@ import { SearchableList } from "../SearchableList/SearchableList";
 
 export interface MailingListSelectorProps {
   onSelect?: (key: string) => void;
+  selectedMailingList?: string;
 }
 
-export const MailingListSelector: React.FC<MailingListSelectorProps> = ({ onSelect }) => {
+export const MailingListSelector: React.FC<MailingListSelectorProps> = ({ onSelect, selectedMailingList }) => {
   const { data: mailingLists, loading: loadingMailingLists } = useMailingLists();
-  const items = useMemo(() => (mailingLists ? mailingLists.map((m) => ({ label: m.name, key: m.id })) : []), [mailingLists]);
+  const items = useMemo(
+    () => (mailingLists ? mailingLists.map((m) => ({ label: m.name, key: m.id })) : []),
+    [mailingLists]
+  );
 
   console.log({ mailingLists, items });
 
@@ -24,6 +28,7 @@ export const MailingListSelector: React.FC<MailingListSelectorProps> = ({ onSele
         onSelect={(key) => {
           onSelect && onSelect(key);
         }}
+        selectedItem={selectedMailingList}
       />
     </div>
   );
