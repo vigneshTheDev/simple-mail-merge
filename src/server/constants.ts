@@ -1,0 +1,1 @@
+export const MAILING_LIST_KEY = 'MAILING_LIST';

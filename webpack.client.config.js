@@ -12,6 +12,11 @@ module.exports = {
     client: path.join(__dirname, './src/client/index.tsx'),
   },
   devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-cheap-module-source-map',
+  externals: {
+    react: 'React',
+    'react-dom': 'ReactDOM',
+    antd: 'antd',
+  },
   module: {
     rules: [
       ...commonConfig.module.rules,

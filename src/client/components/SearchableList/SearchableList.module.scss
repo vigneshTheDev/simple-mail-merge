@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.listContainer {
+  overflow: auto;
+  flex-grow: 1;
+}
+
+.listItem {
+  font-size: 16px;
+  padding: 0 11px;
+  line-height: 40px;
+  cursor: pointer;
+  transition: 0.3s linear background-color;
+  border-radius: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: #e6f7ff;
+  }
+}
+
+.searchBox {
+  padding: 7px 11px;
+  font-size: 16px;
+}
