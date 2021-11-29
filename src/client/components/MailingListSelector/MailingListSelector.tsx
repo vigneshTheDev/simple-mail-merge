@@ -1,14 +1,19 @@
 import { Typography } from "antd";
-import React, { useMemo } from "react";
+import React, { CSSProperties, useMemo } from "react";
 import { useMailingLists } from "../../hooks/useMailingLists";
 import { SearchableList } from "../SearchableList/SearchableList";
 
 export interface MailingListSelectorProps {
   onSelect?: (key: string) => void;
   selectedMailingList?: string;
+  style?: CSSProperties;
 }
 
-export const MailingListSelector: React.FC<MailingListSelectorProps> = ({ onSelect, selectedMailingList }) => {
+export const MailingListSelector: React.FC<MailingListSelectorProps> = ({
+  onSelect,
+  selectedMailingList,
+  style = {},
+}) => {
   const { data: mailingLists, loading: loadingMailingLists } = useMailingLists();
   const items = useMemo(
     () => (mailingLists ? mailingLists.map((m) => ({ label: m.name, key: m.id })) : []),
@@ -18,8 +23,8 @@ export const MailingListSelector: React.FC<MailingListSelectorProps> = ({ onSele
   console.log({ mailingLists, items });
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      <Typography.Title level={5} style={{ color: "#595959", margin: 0 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 16, ...style }}>
+      <Typography.Title level={5} style={{ color: "#595959", margin: 0, flex: "0 0" }}>
         Select a Mailing List
       </Typography.Title>
 
@@ -29,6 +34,7 @@ export const MailingListSelector: React.FC<MailingListSelectorProps> = ({ onSele
           onSelect && onSelect(key);
         }}
         selectedItem={selectedMailingList}
+        style={{ flex: "1 1", overflowY: "auto" }}
       />
     </div>
   );

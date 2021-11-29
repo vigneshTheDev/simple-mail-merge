@@ -1,15 +1,21 @@
-import { GASApi } from '../server/globalExports';
-import { MailingList } from '../server/types';
-import { mailingListMock } from './mocks/mailing-list.mock';
+import { GASApi } from "../server/globalExports";
+import { MailingList } from "../server/types";
+import { mailingListMock } from "./mocks/mailing-list.mock";
+import { templateMock } from "./mocks/templates.mock";
 
 function getMailingLists(): MailingList[] {
   return mailingListMock;
+}
+
+function getTemplates() {
+  return templateMock;
 }
 
 export const mockServer: GASApi = {
   onOpen: () => {},
   openAddon: () => {},
   getMailingLists,
+  getTemplates,
 };
 
 (window as any).google = {

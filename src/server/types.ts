@@ -6,3 +6,10 @@ export type MailingList = {
   headers: string[];
   headerRange: string;
 };
+
+export type Template = {
+  subject: string;
+  body: string;
+  type: "GMail" | "Custom";
+  id: string;
+};

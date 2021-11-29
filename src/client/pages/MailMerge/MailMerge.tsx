@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+
 import { Card } from "../../components/Card/Card";
 import { Layout } from "../../components/Layout/Layout";
-import { MailingListSelector } from "../../components/MailingListSelector/MailingListSelector";
 import { MailMergeSteps, MailMergeStepSelector } from "../../components/MailMergeStepSelector/MailMergeStepSelector";
+import { SelectMailingList } from "./SelectMailingList";
+import { SelectTemplate } from "./SelectTemplate";
 
 export const MailMerge: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(MailMergeSteps.selectMailingList);
@@ -24,13 +26,15 @@ export const MailMerge: React.FC = () => {
           flexDirection: "column",
         }}
       >
-        <Card style={{ flexGrow: 0, flexShrink: 0 }}>
+        <Card style={{ flex: "0 0" }}>
           <MailMergeStepSelector selectedStep={currentPage} onSelect={(k) => setCurrentPage(k)} />
         </Card>
-
-        <Card style={{ flexShrink: 1, overflowY: "auto" }}>
-          <MailingListSelector onSelect={onSelectMailingList} selectedMailingList={mailingList}></MailingListSelector>
-        </Card>
+        {/* Step 1: Select Mailing List */}
+        {currentPage === MailMergeSteps.selectMailingList ? (
+          <SelectMailingList onSelect={onSelectMailingList} selectedMailingList={mailingList} style={{ flex: "1 1" }} />
+        ) : currentPage === MailMergeSteps.selectTemplate ? (
+          <SelectTemplate />
+        ) : null}
       </div>
     </Layout>
   );
