@@ -14,11 +14,11 @@ export const SelectMailingList: React.FC<SelectMailingListProps> = ({ onSelect, 
   return (
     <Card style={{ overflow: "hidden", display: "flex", flexDirection: "column", gap: 16, ...style }}>
       <MailingListSelector
-        style={{ height: "calc(100% - 112px)" }}
+        style={{ flex: "1 1", overflow: "hidden" }}
         onSelect={onSelect}
         selectedMailingList={selectedMailingList}
       ></MailingListSelector>
-      <Space direction="vertical" size={16}>
+      <Space direction="vertical" size={16} style={{ flex: "0 0" }}>
         <Button block icon={<SearchOutlined />} type="primary" size="large">
           Create New List
         </Button>
