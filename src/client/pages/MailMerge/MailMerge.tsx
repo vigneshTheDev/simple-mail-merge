@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import { Card } from "../../components/Card/Card";
 import { Layout } from "../../components/Layout/Layout";
 import { MailMergeSteps, MailMergeStepSelector } from "../../components/MailMergeStepSelector/MailMergeStepSelector";
+import { ScheduleAndSend } from "./ScheduleAndSend";
 import { SelectMailingList } from "./SelectMailingList";
 import { SelectTemplate } from "./SelectTemplate";
 
 export const MailMerge: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(MailMergeSteps.selectMailingList);
+  const [currentPage, setCurrentPage] = useState(MailMergeSteps.selectTemplate);
   const [mailingList, setMailingList] = useState<string>();
+  const [template, setTemplate] = useState<string>();
 
   const onSelectMailingList = (key: string) => {
     setMailingList(key);
@@ -33,7 +35,9 @@ export const MailMerge: React.FC = () => {
         {currentPage === MailMergeSteps.selectMailingList ? (
           <SelectMailingList onSelect={onSelectMailingList} selectedMailingList={mailingList} style={{ flex: "1 1" }} />
         ) : currentPage === MailMergeSteps.selectTemplate ? (
-          <SelectTemplate />
+          <SelectTemplate selectedTemplate={template} onSelect={setTemplate} />
+        ) : currentPage === MailMergeSteps.scheduleAndSend ? (
+          <ScheduleAndSend />
         ) : null}
       </div>
     </Layout>

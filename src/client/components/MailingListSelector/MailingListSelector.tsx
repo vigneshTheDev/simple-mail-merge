@@ -20,11 +20,9 @@ export const MailingListSelector: React.FC<MailingListSelectorProps> = ({
     [mailingLists]
   );
 
-  console.log({ mailingLists, items });
-
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16, ...style }}>
-      <Typography.Title level={5} style={{ color: "#595959", margin: 0, flex: "0 0" }}>
+      <Typography.Title level={4} style={{ color: "#595959", margin: 0, flex: "0 0", fontWeight: 400 }}>
         Select a Mailing List
       </Typography.Title>
 

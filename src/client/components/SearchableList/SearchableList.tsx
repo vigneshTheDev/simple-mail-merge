@@ -1,9 +1,8 @@
 import { Empty, Input } from "antd";
 import React, { useMemo, useState, useEffect, CSSProperties } from "react";
-import QueAnim from "rc-queue-anim";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import cn from "classnames";
-import TweenOne from "rc-tween-one";
+import { animated, useTransition, config } from "react-spring";
 
 import styles from "./SearchableList.module.scss";
 
@@ -47,48 +46,57 @@ export const SearchableList: React.FC<SearchableListProps> = ({
     if (selectedItem && _selectedItem !== selectedItem) onSelect(selectedItem);
   };
 
+  const selectAnimation = useTransition(selectedItem, {
+    from: { scale: 0 },
+    enter: { scale: 1 },
+    onRest: onSelectAnimationEnd,
+    config: config.wobbly,
+  });
+
+  const transitions = useTransition(filteredItems, {
+    from: {
+      opacity: 0,
+      height: 0,
+    },
+    enter: {
+      opacity: 1,
+      height: 40,
+    },
+    leave: {
+      opacity: 0,
+      height: 0,
+    },
+  });
+
   return (
     <div className={styles.container} style={{ ...style }}>
       <Input placeholder={"Search"} className={styles.searchBox} onChange={(e) => setSearchKey(e.target.value)} />
 
       <div style={{ overflowY: "auto", flex: "1 1" }}>
-        <QueAnim
-          appear={false}
-          animConfig={{ opacity: [1, 0], height: [40, 0] }}
-          interval={0}
-          onEnd={() => console.log("Hello")}
-        >
-          {filteredItems.map((item) => {
-            const { key, label } = item;
-            return (
-              <div
-                key={key}
-                onClick={() => setSelectedItem(key)}
-                className={cn(styles.listItem, { [styles.selected]: selectedItem === key })}
-                title={label}
-              >
-                <div className={styles.itemLabel}>{label}</div>{" "}
-                {key === selectedItem && (
-                  <div className={styles.selectedIcon}>
-                    <TweenOne
-                      animation={{
-                        scale: 0,
-                        type: "from",
-                        ease: "easeOutElastic",
-                        duration: 900,
-                        onComplete: onSelectAnimationEnd,
-                      }}
-                    >
+        {transitions(({ opacity, height }, item) => {
+          const { key, label } = item;
+          return (
+            <animated.div
+              style={{ opacity, height }}
+              onClick={() => setSelectedItem(key)}
+              className={cn(styles.listItem, { [styles.selected]: selectedItem === key })}
+              title={label}
+            >
+              <div className={styles.itemLabel}>{label}</div>{" "}
+              {selectAnimation(({ scale }, selected) => {
+                return (
+                  selected === key && (
+                    <animated.div className={styles.selectedIcon} style={{ scale }}>
                       <CheckCircleOutlined />
-                    </TweenOne>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </QueAnim>
+                    </animated.div>
+                  )
+                );
+              })}
+            </animated.div>
+          );
+        })}
+        {!filteredItems.length && <Empty description={searchKey ? "No Match Found" : "No Data"} />}
       </div>
-      {!filteredItems.length && <Empty description={searchKey ? "No Match Found" : "No Data"} />}
     </div>
   );
 };
