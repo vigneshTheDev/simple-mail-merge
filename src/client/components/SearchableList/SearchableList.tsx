@@ -26,6 +26,7 @@ export const SearchableList: React.FC<SearchableListProps> = ({
 }) => {
   const [searchKey, setSearchKey] = useState("");
   const [selectedItem, setSelectedItem] = useState(_selectedItem);
+  const [canAnimate, setCanAnimate] = useState(false);
 
   const itemsSearchable = useMemo(
     () => items.map((item) => ({ ...item, labelLowerCase: item.label.toLowerCase() })),
@@ -70,14 +71,21 @@ export const SearchableList: React.FC<SearchableListProps> = ({
 
   return (
     <div className={styles.container} style={{ ...style }}>
-      <Input placeholder={"Search"} className={styles.searchBox} onChange={(e) => setSearchKey(e.target.value)} />
+      <Input
+        placeholder={"Search"}
+        className={styles.searchBox}
+        onChange={(e) => {
+          setCanAnimate(true);
+          return setSearchKey(e.target.value);
+        }}
+      />
 
       <div style={{ overflowY: "auto", flex: "1 1" }}>
         {transitions(({ opacity, height }, item) => {
           const { key, label } = item;
           return (
             <animated.div
-              style={{ opacity, height }}
+              style={canAnimate ? { opacity, height } : undefined}
               onClick={() => setSelectedItem(key)}
               className={cn(styles.listItem, { [styles.selected]: selectedItem === key })}
               title={label}

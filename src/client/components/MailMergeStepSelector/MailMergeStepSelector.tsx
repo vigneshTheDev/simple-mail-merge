@@ -1,10 +1,11 @@
-import React from 'react';
-import { Stepper } from '../Stepper/Stepper';
+import React from "react";
+import { Stepper } from "../Stepper/Stepper";
 
 export enum MailMergeSteps {
   selectMailingList,
   selectTemplate,
   scheduleAndSend,
+  preview,
 }
 
 export interface MailMergeStepSelectorProps {
@@ -14,18 +15,24 @@ export interface MailMergeStepSelectorProps {
 
 const steps = [
   {
-    label: 'Select Mailing List',
+    label: "Select Mailing List",
     key: MailMergeSteps.selectMailingList,
   },
   {
-    label: 'Select Template',
+    label: "Select Template",
     key: MailMergeSteps.selectTemplate,
   },
   {
-    label: 'Schedule & Send',
+    label: "Schedule & Send",
     key: MailMergeSteps.scheduleAndSend,
   },
 ];
 export const MailMergeStepSelector: React.FC<MailMergeStepSelectorProps> = ({ onSelect, selectedStep }) => {
-  return <Stepper activeKey={selectedStep} steps={steps} onChangeActiveKey={(key) => onSelect(key as MailMergeSteps)}></Stepper>;
+  return (
+    <Stepper
+      activeKey={selectedStep}
+      steps={steps}
+      onChangeActiveKey={(key) => onSelect(key as MailMergeSteps)}
+    ></Stepper>
+  );
 };

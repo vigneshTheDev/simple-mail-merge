@@ -1,7 +1,7 @@
 import React, { CSSProperties, useState } from "react";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { Empty } from "antd";
-import { animated, useSpring } from "react-spring";
+import { animated, useTransition, config } from "react-spring";
 
 import { Card } from "../Card/Card";
 
@@ -25,23 +25,25 @@ export const DraftList: React.FC<DraftListProps> = ({
   style = {},
 }) => {
   const [selectedDraft, setSelectedDraft] = useState(_selectedDraft);
-  const spring = useSpring({ from: { scale: 0 }, to: { scale: 1 } });
 
   const onSelectAnimationEnd = () => {
-    if (selectedDraft && selectedDraft === _selectedDraft) {
+    if (selectedDraft && selectedDraft !== _selectedDraft) {
       onSelect(selectedDraft);
     }
   };
+  const spring = useTransition(selectedDraft, {
+    from: { scale: 0 },
+    enter: { scale: 1 },
+    config: config.wobbly,
+    onRest: onSelectAnimationEnd,
+  });
 
   return (
     <div
       style={{
         display: "flex",
-        gap: 8,
         flexDirection: "column",
-        overflow: "auto",
-        padding: "0 16px",
-        margin: "0 -16px",
+        gap: 8,
         ...style,
       }}
     >
@@ -57,13 +59,15 @@ export const DraftList: React.FC<DraftListProps> = ({
           }}
           onClick={() => setSelectedDraft(d.id)}
         >
-          {selectedDraft === d.id && (
-            <animated.span
-              style={{ color: "#3597f1", position: "absolute", top: 8, right: 8, zIndex: 1, scale: spring.scale }}
-            >
-              <CheckCircleOutlined />
-            </animated.span>
-          )}
+          {spring(({ scale }, selected) => {
+            return (
+              selected === d.id && (
+                <animated.span style={{ color: "#3597f1", position: "absolute", top: 8, right: 8, zIndex: 1, scale }}>
+                  <CheckCircleOutlined />
+                </animated.span>
+              )
+            );
+          })}
           <div style={{ fontSize: 16, marginBottom: 4, color: "#595959" }}>{d.subject}</div>
           <div
             dangerouslySetInnerHTML={{ __html: d.body }}

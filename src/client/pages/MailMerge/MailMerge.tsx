@@ -14,7 +14,22 @@ export const MailMerge: React.FC = () => {
 
   const onSelectMailingList = (key: string) => {
     setMailingList(key);
-    setCurrentPage(MailMergeSteps.selectTemplate);
+  };
+
+  const goNext = () => {
+    let nextPage = MailMergeSteps.selectMailingList;
+    switch (currentPage) {
+      case MailMergeSteps.selectMailingList:
+        nextPage = MailMergeSteps.selectTemplate;
+        break;
+      case MailMergeSteps.selectTemplate:
+        nextPage = MailMergeSteps.scheduleAndSend;
+        break;
+      case MailMergeSteps.scheduleAndSend:
+        nextPage = MailMergeSteps.preview;
+        break;
+    }
+    setCurrentPage(nextPage);
   };
 
   return (
@@ -33,9 +48,14 @@ export const MailMerge: React.FC = () => {
         </Card>
         {/* Step 1: Select Mailing List */}
         {currentPage === MailMergeSteps.selectMailingList ? (
-          <SelectMailingList onSelect={onSelectMailingList} selectedMailingList={mailingList} style={{ flex: "1 1" }} />
+          <SelectMailingList
+            onNext={goNext}
+            onSelect={onSelectMailingList}
+            selectedMailingList={mailingList}
+            style={{ flex: "1 1" }}
+          />
         ) : currentPage === MailMergeSteps.selectTemplate ? (
-          <SelectTemplate selectedTemplate={template} onSelect={setTemplate} />
+          <SelectTemplate onNext={goNext} selectedTemplate={template} onSelect={setTemplate} />
         ) : currentPage === MailMergeSteps.scheduleAndSend ? (
           <ScheduleAndSend />
         ) : null}

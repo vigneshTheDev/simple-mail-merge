@@ -1,6 +1,6 @@
-import { Radio } from "antd";
+import { Button, Radio } from "antd";
 import React, { useMemo, useState } from "react";
-import { MailOutlined, FileOutlined } from "@ant-design/icons";
+import { MailOutlined, FileOutlined, ArrowRightOutlined } from "@ant-design/icons";
 
 import { Card } from "../../components/Card/Card";
 import { useDrafts } from "../../hooks/useDrafts";
@@ -8,9 +8,11 @@ import { DraftList } from "../../components/DraftList/DraftList";
 
 export interface SelectTemplateProps {
   onSelect: (key: string) => void;
+  onNext: () => void;
   selectedTemplate?: string;
 }
-export const SelectTemplate: React.FC<SelectTemplateProps> = ({ onSelect, selectedTemplate }) => {
+
+export const SelectTemplate: React.FC<SelectTemplateProps> = ({ onSelect, selectedTemplate, onNext }) => {
   const [selectedType, setSelectedType] = useState<"GMail" | "Custom">("GMail");
 
   const { data: drafts, loading } = useDrafts();
@@ -35,11 +37,17 @@ export const SelectTemplate: React.FC<SelectTemplateProps> = ({ onSelect, select
         </Radio.Group>
       </div>
 
-      {selectedType === "GMail" ? (
-        <DraftList key={"gmail"} onSelect={onSelect} selectedDraft={selectedTemplate} drafts={gmailDrafts} />
-      ) : (
-        <DraftList key={"custom"} onSelect={onSelect} selectedDraft={selectedTemplate} drafts={customDrafts} />
-      )}
+      <div style={{ flex: "1 1", overflowY: "auto", padding: "0 16px", margin: "0 -16px" }}>
+        {selectedType === "GMail" ? (
+          <DraftList key={"gmail"} onSelect={onSelect} selectedDraft={selectedTemplate} drafts={gmailDrafts} />
+        ) : (
+          <DraftList key={"custom"} onSelect={onSelect} selectedDraft={selectedTemplate} drafts={customDrafts} />
+        )}
+      </div>
+
+      <Button icon={<ArrowRightOutlined />} block type="primary" onClick={onNext} size="large">
+        Next
+      </Button>
     </Card>
   );
 };
