@@ -18,24 +18,12 @@ export interface DraftListProps {
   style?: CSSProperties;
 }
 
-export const DraftList: React.FC<DraftListProps> = ({
-  drafts,
-  onSelect,
-  selectedDraft: _selectedDraft,
-  style = {},
-}) => {
-  const [selectedDraft, setSelectedDraft] = useState(_selectedDraft);
-
-  const onSelectAnimationEnd = () => {
-    if (selectedDraft && selectedDraft !== _selectedDraft) {
-      onSelect(selectedDraft);
-    }
-  };
+export const DraftList: React.FC<DraftListProps> = ({ drafts, onSelect, selectedDraft, style = {} }) => {
+  const [canAnimate, setCanAnimate] = useState(false);
   const spring = useTransition(selectedDraft, {
     from: { scale: 0 },
     enter: { scale: 1 },
     config: config.wobbly,
-    onRest: onSelectAnimationEnd,
   });
 
   return (
@@ -57,12 +45,24 @@ export const DraftList: React.FC<DraftListProps> = ({
             cursor: "pointer",
             transition: "0.4s ease all",
           }}
-          onClick={() => setSelectedDraft(d.id)}
+          onClick={() => {
+            setCanAnimate(true);
+            onSelect(d.id);
+          }}
         >
           {spring(({ scale }, selected) => {
             return (
               selected === d.id && (
-                <animated.span style={{ color: "#3597f1", position: "absolute", top: 8, right: 8, zIndex: 1, scale }}>
+                <animated.span
+                  style={{
+                    color: "#3597f1",
+                    position: "absolute",
+                    top: 8,
+                    right: 8,
+                    zIndex: 1,
+                    scale: canAnimate ? scale : undefined,
+                  }}
+                >
                   <CheckCircleOutlined />
                 </animated.span>
               )

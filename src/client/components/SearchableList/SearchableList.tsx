@@ -18,14 +18,8 @@ export interface SearchableListProps {
   style?: CSSProperties;
 }
 
-export const SearchableList: React.FC<SearchableListProps> = ({
-  items,
-  onSelect,
-  selectedItem: _selectedItem,
-  style = {},
-}) => {
+export const SearchableList: React.FC<SearchableListProps> = ({ items, onSelect, selectedItem, style = {} }) => {
   const [searchKey, setSearchKey] = useState("");
-  const [selectedItem, setSelectedItem] = useState(_selectedItem);
   const [canAnimate, setCanAnimate] = useState(false);
 
   const itemsSearchable = useMemo(
@@ -39,18 +33,9 @@ export const SearchableList: React.FC<SearchableListProps> = ({
     return itemsSearchable.filter((item) => item.labelLowerCase.match(searchKeyLowerCase));
   }, [searchKey, itemsSearchable]);
 
-  useEffect(() => {
-    setSelectedItem(_selectedItem);
-  }, [_selectedItem]);
-
-  const onSelectAnimationEnd = () => {
-    if (selectedItem && _selectedItem !== selectedItem) onSelect(selectedItem);
-  };
-
   const selectAnimation = useTransition(selectedItem, {
     from: { scale: 0 },
     enter: { scale: 1 },
-    onRest: onSelectAnimationEnd,
     config: config.wobbly,
   });
 
@@ -86,7 +71,10 @@ export const SearchableList: React.FC<SearchableListProps> = ({
           return (
             <animated.div
               style={canAnimate ? { opacity, height } : undefined}
-              onClick={() => setSelectedItem(key)}
+              onClick={() => {
+                setCanAnimate(true);
+                onSelect(key);
+              }}
               className={cn(styles.listItem, { [styles.selected]: selectedItem === key })}
               title={label}
             >
@@ -94,7 +82,7 @@ export const SearchableList: React.FC<SearchableListProps> = ({
               {selectAnimation(({ scale }, selected) => {
                 return (
                   selected === key && (
-                    <animated.div className={styles.selectedIcon} style={{ scale }}>
+                    <animated.div className={styles.selectedIcon} style={canAnimate ? { scale } : undefined}>
                       <CheckCircleOutlined />
                     </animated.div>
                   )

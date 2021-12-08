@@ -8,7 +8,7 @@ import { SelectMailingList } from "./SelectMailingList";
 import { SelectTemplate } from "./SelectTemplate";
 
 export const MailMerge: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(MailMergeSteps.selectTemplate);
+  const [currentPage, setCurrentPage] = useState(MailMergeSteps.selectMailingList);
   const [mailingList, setMailingList] = useState<string>();
   const [template, setTemplate] = useState<string>();
 
