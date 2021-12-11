@@ -1,4 +1,5 @@
-import { Typography } from "antd";
+import { ArrowLeftOutlined, EditOutlined } from "@ant-design/icons";
+import { Button, Typography } from "antd";
 import React from "react";
 import { MailingList, Template } from "../../../server/types";
 import { Card } from "../../components/Card/Card";
@@ -9,16 +10,26 @@ export interface PreviewProps {
   template: Template;
   schedule?: ScheduleConfig;
   scheduleType: "now" | "later";
+  onEdit: () => void;
 }
 
-export const Preview: React.FC<PreviewProps> = ({ mailingList, template, schedule, scheduleType }) => {
+export const Preview: React.FC<PreviewProps> = ({ mailingList, template, schedule, scheduleType, onEdit }) => {
   return (
     <Card>
       <Typography.Title
         level={4}
-        style={{ color: "#595959", margin: 0, flex: "0 0", fontWeight: 300, marginBottom: 16 }}
+        style={{
+          color: "#595959",
+          margin: 0,
+          flex: "0 0",
+          fontWeight: 300,
+          marginBottom: 16,
+          display: "flex",
+          justifyContent: "space-between",
+        }}
       >
-        Preview
+        <span>Preview</span>
+        <Button icon={<EditOutlined />} type="text" style={{ color: "inherit" }} onClick={onEdit} />
       </Typography.Title>
 
       <div>

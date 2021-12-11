@@ -84,7 +84,13 @@ export const MailMerge: React.FC = () => {
         currentPage === MailMergeSteps.scheduleAndSend ? (
           <ScheduleAndSend onSelectSchedule={onSchedule} onSelectSendNow={onSendNow} schedule={schedule} />
         ) : currentPage === MailMergeSteps.preview ? (
-          <Preview mailingList={mailingList!} template={template!} scheduleType={scheduleType!} schedule={schedule} />
+          <Preview
+            mailingList={mailingList!}
+            template={template!}
+            scheduleType={scheduleType!}
+            schedule={schedule}
+            onEdit={() => setCurrentPage(MailMergeSteps.selectMailingList)}
+          />
         ) : null}
       </div>
     </Layout>
