@@ -1,13 +1,14 @@
-import { SearchOutlined, PlusOutlined, ArrowRightOutlined, CaretRightOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined } from "@ant-design/icons";
 import { Space, Button } from "antd";
 import React, { CSSProperties } from "react";
+import { MailingList } from "../../../server/types";
 import { Card } from "../../components/Card/Card";
 import { MailingListSelector } from "../../components/MailingListSelector/MailingListSelector";
 
 export interface SelectMailingListProps {
-  onSelect: (key: string) => void;
+  onSelect: (mailingList: MailingList) => void;
   onNext: () => void;
-  selectedMailingList?: string;
+  selectedMailingList?: MailingList;
   style?: CSSProperties;
 }
 

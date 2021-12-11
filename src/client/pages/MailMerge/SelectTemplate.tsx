@@ -5,11 +5,12 @@ import { MailOutlined, FileOutlined, ArrowRightOutlined } from "@ant-design/icon
 import { Card } from "../../components/Card/Card";
 import { useDrafts } from "../../hooks/useDrafts";
 import { DraftList } from "../../components/DraftList/DraftList";
+import { Template } from "../../../server/types";
 
 export interface SelectTemplateProps {
-  onSelect: (key: string) => void;
+  onSelect: (template: Template) => void;
   onNext: () => void;
-  selectedTemplate?: string;
+  selectedTemplate?: Template;
 }
 
 export const SelectTemplate: React.FC<SelectTemplateProps> = ({ onSelect, selectedTemplate, onNext }) => {
@@ -18,6 +19,15 @@ export const SelectTemplate: React.FC<SelectTemplateProps> = ({ onSelect, select
   const { data: drafts, loading } = useDrafts();
   const gmailDrafts = useMemo(() => drafts?.filter((d) => d.type === "GMail") || [], [drafts]);
   const customDrafts = useMemo(() => drafts?.filter((d) => d.type === "Custom") || [], [drafts]);
+
+  const onDraftSelect = (key: string) => {
+    const templates = selectedType === "Custom" ? customDrafts : gmailDrafts;
+    const selectedTemplate = templates.find((t) => t.id === key);
+
+    if (selectedTemplate) {
+      onSelect(selectedTemplate);
+    }
+  };
 
   return (
     <Card style={{ display: "flex", flexDirection: "column", flex: "1 1", overflow: "hidden", gap: 16 }}>
@@ -39,9 +49,14 @@ export const SelectTemplate: React.FC<SelectTemplateProps> = ({ onSelect, select
 
       <div style={{ flex: "1 1", overflowY: "auto", padding: "0 16px", margin: "0 -16px" }}>
         {selectedType === "GMail" ? (
-          <DraftList key={"gmail"} onSelect={onSelect} selectedDraft={selectedTemplate} drafts={gmailDrafts} />
+          <DraftList key={"gmail"} onSelect={onDraftSelect} selectedDraft={selectedTemplate?.id} drafts={gmailDrafts} />
         ) : (
-          <DraftList key={"custom"} onSelect={onSelect} selectedDraft={selectedTemplate} drafts={customDrafts} />
+          <DraftList
+            key={"custom"}
+            onSelect={onDraftSelect}
+            selectedDraft={selectedTemplate?.id}
+            drafts={customDrafts}
+          />
         )}
       </div>
 

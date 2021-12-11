@@ -1,11 +1,13 @@
 import { Typography } from "antd";
 import React, { CSSProperties, useMemo } from "react";
+
+import { MailingList } from "../../../server/types";
 import { useMailingLists } from "../../hooks/useMailingLists";
 import { SearchableList } from "../SearchableList/SearchableList";
 
 export interface MailingListSelectorProps {
-  onSelect?: (key: string) => void;
-  selectedMailingList?: string;
+  onSelect: (mailingList: MailingList) => void;
+  selectedMailingList?: MailingList;
   style?: CSSProperties;
 }
 
@@ -29,9 +31,10 @@ export const MailingListSelector: React.FC<MailingListSelectorProps> = ({
       <SearchableList
         items={items}
         onSelect={(key) => {
-          onSelect && onSelect(key);
+          const selectedList = mailingLists!.find((item) => item.id === key);
+          if (selectedList) onSelect(selectedList);
         }}
-        selectedItem={selectedMailingList}
+        selectedItem={selectedMailingList?.id}
         style={{ flex: "1 1", overflowY: "auto" }}
       />
     </div>

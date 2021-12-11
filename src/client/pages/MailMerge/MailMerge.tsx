@@ -1,23 +1,40 @@
+import { message } from "antd";
 import React, { useState } from "react";
+import { MailingList, Template } from "../../../server/types";
 
 import { Card } from "../../components/Card/Card";
 import { Layout } from "../../components/Layout/Layout";
 import { MailMergeSteps, MailMergeStepSelector } from "../../components/MailMergeStepSelector/MailMergeStepSelector";
-import { ScheduleAndSend } from "./ScheduleAndSend";
+import { Preview } from "./Preview";
+import { ScheduleAndSend, ScheduleConfig } from "./ScheduleAndSend";
 import { SelectMailingList } from "./SelectMailingList";
 import { SelectTemplate } from "./SelectTemplate";
 
 export const MailMerge: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(MailMergeSteps.scheduleAndSend);
-  const [mailingList, setMailingList] = useState<string>();
-  const [template, setTemplate] = useState<string>();
+  const [currentPage, setCurrentPage] = useState(MailMergeSteps.selectMailingList);
 
-  const onSelectMailingList = (key: string) => {
-    setMailingList(key);
+  const [mailingList, setMailingList] = useState<MailingList>();
+  const [template, setTemplate] = useState<Template>();
+  const [schedule, setSchedule] = useState<ScheduleConfig>();
+  const [scheduleType, setScheduleType] = useState<"now" | "later">();
+
+  const onSelectMailingList = (mailingList: MailingList) => {
+    setMailingList(mailingList);
+  };
+
+  const onSchedule = (schedule: ScheduleConfig) => {
+    setSchedule(schedule);
+    setScheduleType("later");
+    goNext();
+  };
+
+  const onSendNow = () => {
+    setScheduleType("now");
+    goNext();
   };
 
   const goNext = () => {
-    let nextPage = MailMergeSteps.selectMailingList;
+    let nextPage = currentPage;
     switch (currentPage) {
       case MailMergeSteps.selectMailingList:
         nextPage = MailMergeSteps.selectTemplate;
@@ -26,6 +43,9 @@ export const MailMerge: React.FC = () => {
         nextPage = MailMergeSteps.scheduleAndSend;
         break;
       case MailMergeSteps.scheduleAndSend:
+        if (!mailingList) return message.error("Please select a mailing list");
+        if (!template) return message.error("Please select a template");
+
         nextPage = MailMergeSteps.preview;
         break;
     }
@@ -43,9 +63,12 @@ export const MailMerge: React.FC = () => {
           flexDirection: "column",
         }}
       >
-        <Card style={{ flex: "0 0" }}>
-          <MailMergeStepSelector selectedStep={currentPage} onSelect={(k) => setCurrentPage(k)} />
-        </Card>
+        {currentPage !== MailMergeSteps.preview && (
+          <Card style={{ flex: "0 0" }}>
+            <MailMergeStepSelector selectedStep={currentPage} onSelect={(k) => setCurrentPage(k)} />
+          </Card>
+        )}
+
         {/* Step 1: Select Mailing List */}
         {currentPage === MailMergeSteps.selectMailingList ? (
           <SelectMailingList
@@ -54,10 +77,14 @@ export const MailMerge: React.FC = () => {
             selectedMailingList={mailingList}
             style={{ flex: "1 1" }}
           />
-        ) : currentPage === MailMergeSteps.selectTemplate ? (
+        ) : /* Step 2: Select Template */
+        currentPage === MailMergeSteps.selectTemplate ? (
           <SelectTemplate onNext={goNext} selectedTemplate={template} onSelect={setTemplate} />
-        ) : currentPage === MailMergeSteps.scheduleAndSend ? (
-          <ScheduleAndSend />
+        ) : /* Step 3: Schedule / Send */
+        currentPage === MailMergeSteps.scheduleAndSend ? (
+          <ScheduleAndSend onSelectSchedule={onSchedule} onSelectSendNow={onSendNow} schedule={schedule} />
+        ) : currentPage === MailMergeSteps.preview ? (
+          <Preview mailingList={mailingList!} template={template!} scheduleType={scheduleType!} schedule={schedule} />
         ) : null}
       </div>
     </Layout>
