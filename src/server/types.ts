@@ -13,3 +13,8 @@ export type Template = {
   type: "GMail" | "Custom";
   id: string;
 };
+
+export type CreateMailingListInput = {
+  name: string;
+  columns: string[];
+};

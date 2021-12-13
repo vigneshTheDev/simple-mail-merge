@@ -1,4 +1,4 @@
-import { getMailingLists } from "./mailingLists";
+import { getMailingLists, insertMailingList } from "./mailingLists";
 import { getTemplates } from "./templates";
 import { onOpen, openAddon } from "./triggers";
 
@@ -7,6 +7,7 @@ const api = {
   openAddon,
   getMailingLists,
   getTemplates,
+  insertMailingList,
 };
 
 type ApiKeys = keyof typeof api;

@@ -16,6 +16,7 @@ export const mockServer: GASApi = {
   openAddon: () => {},
   getMailingLists,
   getTemplates,
+  insertMailingList: (_) => {},
 };
 
 (window as any).google = {
@@ -50,7 +51,7 @@ class ChainedRun {
     return this;
   }
 
-  private runFn(fn: () => any) {
+  private runFn(fn: (...args: any[]) => any) {
     try {
       const response = fn();
       this.successHandler(response);

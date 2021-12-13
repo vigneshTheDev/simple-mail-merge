@@ -4,7 +4,11 @@ import api from "./globalExports";
 global.onOpen = api.onOpen;
 // @ts-ignore
 global.openAddon = api.openAddon;
+
 // @ts-ignore
 global.getMailingLists = api.getMailingLists;
+// @ts-ignore
+global.insertMailingList = api.insertMailingList;
+
 // @ts-ignore
 global.getTemplates = api.getTemplates;

@@ -1,7 +1,7 @@
-import { GASApiAsPromised } from '../server/globalExports';
-import { sortedIndexOf } from 'lodash';
+import { GASApiAsPromised } from "../server/globalExports";
+import { sortedIndexOf } from "lodash";
 
-const exceptions = ['withFailureHandler', 'withLogger', 'withSuccessHandler', 'withUserObject'].sort();
+const exceptions = ["withFailureHandler", "withLogger", "withSuccessHandler", "withUserObject"].sort();
 const _server = {} as any;
 
 declare const google: any;
