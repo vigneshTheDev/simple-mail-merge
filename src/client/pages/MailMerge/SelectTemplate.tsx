@@ -1,4 +1,4 @@
-import { Button, Radio } from "antd";
+import { Button, Radio, Skeleton } from "antd";
 import React, { useMemo, useState } from "react";
 import { MailOutlined, FileOutlined, ArrowRightOutlined } from "@ant-design/icons";
 
@@ -48,7 +48,9 @@ export const SelectTemplate: React.FC<SelectTemplateProps> = ({ onSelect, select
       </div>
 
       <div style={{ flex: "1 1", overflowY: "auto", padding: "0 16px", margin: "0 -16px" }}>
-        {selectedType === "GMail" ? (
+        {loading ? (
+          <Skeleton active />
+        ) : selectedType === "GMail" ? (
           <DraftList key={"gmail"} onSelect={onDraftSelect} selectedDraft={selectedTemplate?.id} drafts={gmailDrafts} />
         ) : (
           <DraftList

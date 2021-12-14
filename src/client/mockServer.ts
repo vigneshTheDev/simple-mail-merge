@@ -54,7 +54,9 @@ class ChainedRun {
   private runFn(fn: (...args: any[]) => any) {
     try {
       const response = fn();
-      this.successHandler(response);
+      setTimeout(() => {
+        this.successHandler(response);
+      }, 5000);
     } catch (ex: any) {
       this.failureHandler(ex);
     }

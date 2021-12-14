@@ -1,5 +1,6 @@
-import { Typography } from "antd";
+import { Skeleton, Spin, Typography } from "antd";
 import React, { CSSProperties, useMemo } from "react";
+import { LoadingOutlined } from "@ant-design/icons";
 
 import { MailingList } from "../../../server/types";
 import { useMailingLists } from "../../hooks/useMailingLists";
@@ -27,16 +28,23 @@ export const MailingListSelector: React.FC<MailingListSelectorProps> = ({
       <Typography.Title level={4} style={{ color: "#595959", margin: 0, flex: "0 0", fontWeight: 300 }}>
         Select a Mailing List
       </Typography.Title>
-
-      <SearchableList
-        items={items}
-        onSelect={(key) => {
-          const selectedList = mailingLists!.find((item) => item.id === key);
-          if (selectedList) onSelect(selectedList);
-        }}
-        selectedItem={selectedMailingList?.id}
-        style={{ flex: "1 1", overflowY: "auto" }}
-      />
+      {loadingMailingLists ? (
+        // <Spin indicator={<LoadingOutlined />} ></Spin>
+        <>
+          <Skeleton.Input active />
+          <Skeleton active />
+        </>
+      ) : (
+        <SearchableList
+          items={items}
+          onSelect={(key) => {
+            const selectedList = mailingLists!.find((item) => item.id === key);
+            if (selectedList) onSelect(selectedList);
+          }}
+          selectedItem={selectedMailingList?.id}
+          style={{ flex: "1 1", overflowY: "auto" }}
+        />
+      )}
     </div>
   );
 };
