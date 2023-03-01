@@ -10,7 +10,10 @@
     "build": "rimraf dist && NODE_ENV=production run-s build:server build:client",
     "build:server": "webpack --config ./webpack.server.config.js",
     "build:client": "webpack --config webpack.client.config.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "push": "clasp push",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "author": "",
   "license": "ISC",
@@ -19,9 +22,18 @@
     "@babel/preset-env": "^7.16.0",
     "@babel/preset-react": "^7.16.0",
     "@babel/preset-typescript": "^7.16.0",
+    "@storybook/addon-actions": "^6.3.12",
+    "@storybook/addon-essentials": "^6.3.12",
+    "@storybook/addon-links": "^6.3.12",
+    "@storybook/builder-webpack5": "^6.3.12",
+    "@storybook/manager-webpack5": "^6.3.12",
+    "@storybook/react": "^6.3.12",
     "@types/google-apps-script": "^1.0.38",
+    "@types/lodash": "^4.14.177",
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
+    "@types/react-router-dom": "^5.3.2",
+    "@types/uuid": "^8.3.3",
     "@typescript-eslint/eslint-plugin": "^5.2.0",
     "@typescript-eslint/parser": "^5.2.0",
     "babel-loader": "^8.2.3",
@@ -34,7 +46,7 @@
     "gas-webpack-plugin": "^2.1.0",
     "html-inline-script-webpack-plugin": "^2.0.3",
     "html-webpack-plugin": "^5.5.0",
-    "prettier": "^2.4.1",
+    "prettier": "^2.5.0",
     "sass": "^1.43.4",
     "sass-loader": "^12.3.0",
     "style-loader": "^3.3.1",
@@ -44,10 +56,17 @@
     "webpack-cli": "^4.9.1"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "antd": "^4.16.13",
+    "classnames": "^2.3.1",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
     "npm-run-all": "^4.1.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.3.0",
-    "rimraf": "^3.0.2"
+    "react-spring": "^9.3.2",
+    "rimraf": "^3.0.2",
+    "uuid": "^8.3.2"
   }
 }

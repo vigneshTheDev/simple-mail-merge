@@ -1,23 +1,29 @@
-const path = require('path');
+const path = require("path");
 
-const HtmlPlugin = require('html-webpack-plugin');
-const HtmlInlineScriptPlugin = require('html-inline-script-webpack-plugin');
+const HtmlPlugin = require("html-webpack-plugin");
+const HtmlInlineScriptPlugin = require("html-inline-script-webpack-plugin");
 
-const commonConfig = require('./webpack.common.config');
+const commonConfig = require("./webpack.common.config");
 
 /** @type {import('webpack').Configuration} */
 module.exports = {
   ...commonConfig,
   entry: {
-    client: path.join(__dirname, './src/client/index.tsx'),
+    client: path.join(__dirname, "./src/client/index.tsx"),
   },
-  devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-cheap-module-source-map',
+  devtool: process.env.NODE_ENV === "production" ? "source-map" : "eval-cheap-module-source-map",
+  externals: {
+    react: "React",
+    "react-dom": "ReactDOM",
+    antd: "antd",
+    moment: "moment",
+  },
   module: {
     rules: [
       ...commonConfig.module.rules,
       {
         test: /\.(jpe?g|png|gif|woff|woff2|eot|ttf|svg)(\?[a-z0-9=.]+)?$/,
-        loader: 'url-loader',
+        loader: "url-loader",
         options: {
           limit: 100000,
         },
@@ -27,13 +33,13 @@ module.exports = {
         test: /\.s?css$/,
         use: [
           {
-            loader: 'style-loader',
+            loader: "style-loader",
           },
           {
-            loader: 'css-loader',
+            loader: "css-loader",
           },
           {
-            loader: 'scss-loader',
+            loader: "sass-loader",
           },
         ],
       },
@@ -42,11 +48,11 @@ module.exports = {
   plugins: [
     ...commonConfig.plugins,
     new HtmlPlugin({
-      filename: 'app.html',
-      chunks: ['client'],
-      template: path.join(__dirname, './src/client/index.html'),
-      inlineSource: '.(js|css)$',
-      inject: 'body',
+      filename: "app.html",
+      chunks: ["client"],
+      cache: false,
+      template: path.join(__dirname, "./src/client/index.html"),
+      inject: "body",
     }),
     new HtmlInlineScriptPlugin(),
   ],

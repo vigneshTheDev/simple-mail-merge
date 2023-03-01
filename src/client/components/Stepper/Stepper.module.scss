@@ -1,0 +1,58 @@
+.stepCircle {
+  height: 20px;
+  width: 20px;
+  display: inline-flex;
+  background: #f0f0f0;
+  border: 1px solid #cccccc;
+  border-radius: 50%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible;
+  z-index: 1;
+  transition: 0.1s linear all;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+.stepLabel {
+  transition: 0.1s linear all;
+}
+
+.active {
+  .stepCircle {
+    color: #0b66a7;
+    background-color: #e6f7ff;
+    border: 1px solid #69c0ff;
+  }
+
+  .stepLabel {
+    color: #595959;
+    font-weight: 700;
+  }
+}
+
+.stepRow {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  gap: 8px;
+  cursor: pointer;
+
+  & + & {
+    margin-top: 12px;
+  }
+
+  & + & .stepCircle::before {
+    content: '';
+    position: absolute;
+    height: 14px;
+    width: 1px;
+    left: 50%;
+    top: -1px;
+    transform: translateY(-100%);
+    background-color: #cccccc;
+    z-index: 0;
+  }
+}

@@ -1,10 +1,14 @@
-// @ts-ignore
-global.onOpen = () => {
-  SpreadsheetApp.getUi().createMenu('SMM').addItem('Launch Addon', 'openAddon').addToUi();
-};
+import api from "./globalExports";
 
 // @ts-ignore
-global.openAddon = () => {
-  const html = HtmlService.createHtmlOutputFromFile('app.html');
-  SpreadsheetApp.getUi().showSidebar(html.setTitle('Html'));
-};
+global.onOpen = api.onOpen;
+// @ts-ignore
+global.openAddon = api.openAddon;
+
+// @ts-ignore
+global.getMailingLists = api.getMailingLists;
+// @ts-ignore
+global.insertMailingList = api.insertMailingList;
+
+// @ts-ignore
+global.getTemplates = api.getTemplates;

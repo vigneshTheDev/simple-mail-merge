@@ -1,0 +1,16 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "push",
+			"problemMatcher": [],
+			"label": "npm: push",
+			"detail": "clasp push",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}
